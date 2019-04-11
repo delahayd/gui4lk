@@ -38,23 +38,28 @@ public class Main {
 	System.out.println ("Axiom 10: " + ax10.toString ());
 
 	// Sequents
-	Sequent s1 = new Sequent();
-	s1.addConcl (ax1);
-	Sequent s2 = new Sequent();
-	s2.addHyps (new Imp(a,new Imp(b,c)));
-	s2.addHyps (new Imp(a,b));
+	Sequent s1 = new Sequent (ax1);
+	Sequent s2 = new Sequent ();
+	s2.addHyps (new Imp (a,new Imp (b,c)));
+	s2.addHyps (new Imp (a,b));
 	s2.addHyps (a);
 	s2.addConcl (c);
 	Sequent s3 = new Sequent();
-	s3.addHyps (new Imp(a,new Imp(b,c)));
+	s3.addHyps (new Imp (a,new Imp (b,c)));
 	s3.addHyps (a);
 	s3.addConcl (c);
-	s3.addConcl (new Not(new Imp(a,b)));
+	s3.addConcl (new Not (new Imp (a,b)));
 	
 	System.out.println ("\n**** Sequents ****\n");
 	System.out.println ("Sequent 1: " + s1.toString ());
 	System.out.println ("Sequent 2: " + s2.toString ());
 	System.out.println ("Sequent 3: " + s3.toString ());
+
+	// Proofs
+	System.out.println ("\n**** Proofs ****\n");
+	ProofEngine pe = new ProofEngine (s1);
+	pe.loop ();
+
     }//main
 
 }//Main

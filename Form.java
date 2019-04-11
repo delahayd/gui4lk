@@ -1,6 +1,16 @@
 // $Id$
 
-abstract class Form {}//Form
+import java.util.*;
+
+class ApplyRuleException extends RuntimeException {}//ApplyRuleException
+
+abstract class Form {
+
+    ArrayList<Sequent> applyRule (Sequent s, int i, Side c, Rule r) {
+	return new ArrayList<Sequent> ();
+    }//applyRule
+
+}//Form
 
 class Var extends Form {
 
@@ -84,6 +94,25 @@ class Imp extends BinCon {
 	this.f1 = f1;
 	this.f2 = f2;
     }//Imp
+
+    ArrayList<Sequent> applyRule (Sequent s, int i, Side c, Rule r) {
+	ArrayList<Sequent> res = new ArrayList<Sequent> ();
+	ArrayList<Form> hyps, concl;
+	if (r != Rule.ImpLeft && r != Rule.ImpRight)
+	    throw new ApplyRuleException ();
+	else if ((r == Rule.ImpLeft && c == Side.Right) || 
+		 (r == Rule.ImpRight && c == Side.Left))
+	    throw new ApplyRuleException ();
+	else if (r == Rule.ImpRight) {
+	    hyps = (ArrayList<Form>)(s.getHyps ().clone ());
+	    concl = (ArrayList<Form>)(s.getConcl ().clone ());
+	    concl.remove (i);
+	    hyps.add (f1);
+	    concl.add (f2);
+	    res.add (new Sequent (hyps, concl));
+	}//if
+	return res;
+    }//applyRule
 
     public String toString () {
 	return "(" + (f1.toString ()) + " ⇒ " + (f2.toString ()) + ")";

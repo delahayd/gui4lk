@@ -16,6 +16,20 @@ class Sequent {
 	this.concl = concl;
     }//Sequent
 
+    Sequent (Form f) {
+        hyps = new ArrayList<Form>();
+	concl = new ArrayList<Form>();
+	concl.add (f);
+    }//Sequent
+
+    ArrayList<Form> getHyps () {
+	return hyps;
+    }//getHyps
+
+    ArrayList<Form> getConcl () {
+	return concl;
+    }//getConcl
+
     void addHyps (Form f) {
 	hyps.add(f);
     }//addHyps
@@ -25,7 +39,6 @@ class Sequent {
     }//addConcl
     
     public String toString () {
-	// Printing hypotheses
 	String res = "";
 	for (int i = 0; i < hyps.size (); i++) {
 	    res += hyps.get(i).toString ();
@@ -35,6 +48,22 @@ class Sequent {
 	res = (hyps.size () == 0)?res + "⊢ ":res + " ⊢ ";
 	for (int i = 0; i < concl.size (); i++) {
 	    res += concl.get(i).toString ();
+	    if (i != (concl.size () - 1))
+		res += ", ";
+	}//for
+	return res;
+    }//toString
+
+    public String toStringIndex () {
+	String res = "";
+	for (int i = 0; i < hyps.size (); i++) {
+	    res += "(" + (i + 1) + ") " + hyps.get(i).toString ();
+	    if (i != (hyps.size () - 1))
+		res += ", ";
+	}//for
+	res = (hyps.size () == 0)?res + "⊢ ":res + " ⊢ ";
+	for (int i = 0; i < concl.size (); i++) {
+	    res += "(" + (i + 1) + ") " + concl.get(i).toString ();
 	    if (i != (concl.size () - 1))
 		res += ", ";
 	}//for

@@ -1,7 +1,7 @@
 # $Id$
 
 JAVAC=javac
-FILES=Form.java Sequent.java Main.java
+FILES=Rules.java Form.java Sequent.java Proof.java Main.java
 CLASS=$(FILES:.java=.class)
 
 all: $(CLASS)
