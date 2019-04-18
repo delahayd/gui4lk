@@ -1,6 +1,9 @@
 // $Id$
 
+import java.io.*;
 import java.util.*;
+
+class InputException extends RuntimeException {}//InputException
 
 class ProofTree {
 
@@ -102,13 +105,57 @@ class ProofEngine {
 				toBeProved.get (i).toString ());
     }//print
 
+    void help () {
+	System.out.println("Actions are either:");
+	System.out.println("* h = display this help message");
+	System.out.println("* ax = apply axiom rule");
+	System.out.println("* s:i:cnt =");
+    }//help
+    
     void loop () {
-	printIndex ();
-	applyRule (0, Side.Right, Rule.ImpRight);
-	printIndex ();
-	applyRule (0, Side.Right, Rule.ImpRight);
-	printIndex ();
-	applyAxiom ();
+	BufferedReader buffer =
+	    new BufferedReader (new InputStreamReader (System.in));
+	String [] res;
+	while (!complete) {
+	    try {
+		printIndex ();
+		System.out.print ("Action: ");
+		res = buffer.readLine ().split (":");
+		if (res.length == 1)
+		    if (res[0].equals ("h"))
+			help ();
+		    else if (res[0].equals ("ax"))
+			applyAxiom ();
+		    else
+			throw new InputException ();
+		else if (res.length == 3) {
+		    Side s;
+		    if (res[0].equals("l"))
+			s = Side.Left;
+		    else if (res[0].equals("r"))
+			s = Side.Right;
+		    else
+			throw new InputException ();
+		    int index = Integer.parseInt (res[1]) - 1;
+		    switch (res[2]) {
+		    case "imp":
+			if (s == Side.Left)
+			    applyRule (index, s, Rule.ImpLeft);
+			else
+			    applyRule (index, s, Rule.ImpRight);
+			break;
+		    default:
+			throw new InputException ();
+		    }//switch
+		}//if
+		System.out.println();
+	    }//try
+	    catch (Exception e) {
+		System.out.println ("Input not well formed");
+		System.out.println();
+	    }//catch
+	}//while
+	System.out.println ("Proof complete !");	
     }//loop
 
 }//ProofEngine

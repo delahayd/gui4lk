@@ -95,6 +95,7 @@ class Imp extends BinCon {
 	this.f2 = f2;
     }//Imp
 
+    @SuppressWarnings("unchecked")
     ArrayList<Sequent> applyRule (Sequent s, int i, Side c, Rule r) {
 	ArrayList<Sequent> res = new ArrayList<Sequent> ();
 	ArrayList<Form> hyps, concl;
